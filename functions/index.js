@@ -32,7 +32,7 @@ exports.testFunction = functions
 
           const introduction = await writeTacticIntroduction(data);
           const impact = await writeTacticImpact(data);
-          const resourcesNeeded = await writeTacticresourcesNeeded(data);
+          const resourcesNeeded = await writeTacticResourcesNeeded(data);
           const organise = await writeTacticOrganise(data);
           const example = await writeTacticExample(data);
           const improve = await writeTacticImprove(data);
