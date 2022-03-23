@@ -32,16 +32,20 @@ exports.testFunction = functions
 
           const introduction = await writeTacticIntroduction(data);
           const impact = await writeTacticImpact(data);
+          const resourcesNeeded = await writeTacticresourcesNeeded(data);
           const organise = await writeTacticOrganise(data);
           const example = await writeTacticExample(data);
+          const improve = await writeTacticImprove(data);
 
           const fullResponse = {
             topic: data.topic,
             type: data.type,
             introduction: introduction,
             impact: impact,
+            resourcesNeeded: resourcesNeeded,
             organise: organise,
             example: example,
+            improve: improve,
           };
 
           resultRef
@@ -66,7 +70,9 @@ async function writeTacticIntroduction(data) {
   return await openai
     .createCompletion("text-davinci-002", {
       prompt:
-        "Write a short introduction for a guide about '" + data.topic + " '.",
+        "Write a short introduction for a guide for activists about '" +
+        data.topic +
+        " '.",
       temperature: 0.5,
       max_tokens: 120,
     })
@@ -86,6 +92,23 @@ async function writeTacticImpact(data) {
         "How effective are '" +
         data.topic +
         " ' and how can I make them more impactful?",
+      temperature: 0.5,
+      max_tokens: 120,
+    })
+    .then((response) => {
+      return response.data.choices[0].text;
+    })
+    .catch((error) => {
+      functions.logger.error("🔴 Error in OpenAI", error);
+      return error;
+    });
+}
+
+async function writeTacticResourcesNeeded(data) {
+  return await openai
+    .createCompletion("text-davinci-002", {
+      prompt:
+        "What resources do activists need to organise a '" + data.topic + " '?",
       temperature: 0.5,
       max_tokens: 120,
     })
@@ -121,6 +144,23 @@ async function writeTacticExample(data) {
         "Where can I find examples for activists of a successful " +
         data.topic +
         " '?",
+      temperature: 0.5,
+      max_tokens: 120,
+    })
+    .then((response) => {
+      return response.data.choices[0].text;
+    })
+    .catch((error) => {
+      functions.logger.error("🔴 Error in OpenAI", error);
+      return error;
+    });
+}
+
+async function writeTacticImprove(data) {
+  return await openai
+    .createCompletion("text-davinci-002", {
+      prompt:
+        "List questions that activists may have about " + data.topic + " '.",
       temperature: 0.5,
       max_tokens: 120,
     })
