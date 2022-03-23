@@ -10,6 +10,7 @@ exports.testFunction = functions
     functions.logger.info("testfunction started", context.rawRequest.headers);
 
     const envRef = db.collection("rebeltools-write").doc("env");
+    const resultRef = db.collection("results").doc(data.id);
 
     return envRef
       .get()
@@ -33,6 +34,10 @@ exports.testFunction = functions
             })
             .then((response) => {
               functions.logger.info("response", response);
+
+              resultRef.set(response).catch((error) => {
+                functions.logger.error("Error in setting result data", error);
+              });
               return response;
             })
             .catch((error) => {
