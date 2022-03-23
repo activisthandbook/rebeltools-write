@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const { Configuration, OpenAIApi } = require("openai");
+const db = admin.firestore();
 
 exports.testFunction = functions
   .region("europe-west1")
@@ -32,11 +33,11 @@ exports.testFunction = functions
               return response;
             })
             .catch((error) => {
-              functions.logger.info("error", error);
+              functions.logger.error("error", error);
             });
         }
       })
       .catch((error) => {
-        functions.logger.info("error", error);
+        functions.logger.error("error", error);
       });
   });
