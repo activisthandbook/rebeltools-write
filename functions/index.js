@@ -9,7 +9,7 @@ exports.testFunction = functions
   .https.onCall((data, context) => {
     functions.logger.info("testfunction started", context.rawRequest.headers);
 
-    const userProfileRef = db.collection("rebeltools-write").doc("env");
+    const envRef = db.collection("rebeltools-write").doc("env");
 
     envRef
       .get()
