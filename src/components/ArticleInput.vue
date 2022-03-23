@@ -7,6 +7,7 @@
           label="Article topic"
           hint="Examples: petition, protest march, Extinction Rebellion"
           v-model="topic"
+          color="secondary"
         />
         <div>
           <q-radio
@@ -61,7 +62,7 @@
               </div>
               <q-checkbox
                 v-model="consent"
-                color="secondart"
+                color="secondary"
                 label="I accept the usage terms & privacy policy."
               />
             </div>

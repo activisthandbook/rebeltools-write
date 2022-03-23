@@ -21,6 +21,16 @@
           <strong>Use it to brainstorm and get inspiration</strong> about the
           topic you want to write about.
         </div>
+        <div>
+          Rebel Write is open source. If you are interested in learning more
+          about how we built this tool, check our
+          <a
+            href="https://github.com/activisthandbook/rebeltools-write/"
+            target="_blank"
+            style="color: white"
+            >GitHub repository</a
+          >.
+        </div>
       </div>
     </q-card-section>
   </q-card>
