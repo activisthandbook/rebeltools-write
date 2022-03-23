@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const { Configuration, OpenAIApi } = require("openai");
+const admin = require("firebase-admin");
 const db = admin.firestore();
 
 exports.testFunction = functions
