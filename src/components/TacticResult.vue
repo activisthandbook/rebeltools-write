@@ -24,23 +24,57 @@
         <p style="white-space: break-spaces">
           {{ $store.state.result.data.example.substring(2) }}
         </p>
+        <p>
+          Also check out the
+          <a
+            :href="
+              'https://nvdatabase.swarthmore.edu/index.php/search/node?keys=' +
+              $store.state.result.data.topic
+            "
+            target="_blank"
+            >Global Nonviolent Action Database</a
+          >
+          (opens in new tab).
+        </p>
         <h2>Improve this page</h2>
-        <p>Answer these questions:</p>
+        <p>These are some questions people may have:</p>
         <p style="white-space: break-spaces">
           {{ $store.state.result.data.improve.substring(2) }}
         </p>
         <h2>External resources</h2>
         <p>
-          See relevant
+          See relevant resources on
+          <a
+            :href="
+              'https://beautifultrouble.org/toolbox/search/' +
+              $store.state.result.data.topic
+            "
+            target="_blank"
+            >Beautiful Trouble</a
+          >,
           <a
             :href="
               'https://www.google.com/search?q=how+to+organise+' +
               $store.state.result.data.topic
             "
             target="_blank"
-            >resources on Google</a
+            >Google</a
           >
-          (opens in new tab).
+          and
+          <a
+            :href="
+              'https://scholar.google.com/scholar?q=' +
+              $store.state.result.data.topic +
+              '+activist+tactic'
+            "
+            target="_blank"
+            >Google Scholar</a
+          >
+          (both open in new tab). Also make sure to check out the
+          <a href="https://activisthandbook.org/resources" target="_blank"
+            >other sources for resources</a
+          >
+          on Activist Handbook.
         </p>
       </div>
     </q-card-section>

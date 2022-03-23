@@ -12,7 +12,10 @@
         <div>
           Our AI is quite smart, but not human. It will makes mistakes, so be
           careful when using it.
-          <strong>Not everything our tool says it factually true.</strong>
+          <strong
+            >Not everything our tool says it factually true or morally
+            right.</strong
+          >
           You need to do your own research.
         </div>
         <div>
@@ -29,7 +32,13 @@
             target="_blank"
             style="color: white"
             >GitHub repository</a
-          >.
+          >. This tool was developed by the people behind
+          <a
+            href="https://github.com/activisthandbook/rebeltools-write/"
+            target="_blank"
+            style="color: white"
+            >Activist Handbook</a
+          >, the Wikipedia for activists.
         </div>
       </div>
     </q-card-section>
