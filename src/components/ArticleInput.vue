@@ -39,6 +39,7 @@
           @click="generateText()"
           :disable="!topic || !consent"
           no-caps
+          :loading="dataLoading || (!dataLoading && $store.state.result.data)"
         />
       </div>
     </q-card-section>
@@ -53,12 +54,15 @@ export default {
   data() {
     return {
       consent: false,
+      dataLoading: false,
       topic: "",
       type: "tactic",
     };
   },
   methods: {
     generateText() {
+      this.dataLoading = true;
+
       const testFunction = httpsCallable(
         this.$store.state.firebase.functions,
         "testFunction"
@@ -68,6 +72,7 @@ export default {
         .then((result) => {
           onSnapshot(doc(db, "results", id), (doc) => {
             this.$store.commit("result/addResult", doc.data());
+            this.dataLoading = false;
           });
         })
         .catch((error) => {

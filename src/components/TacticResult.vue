@@ -9,7 +9,9 @@
       <p>{{ $store.state.result.data.impact }}</p>
       <h2>Resources needed</h2>
       <h2>How to organise</h2>
+      <p>{{ $store.state.result.data.organise }}</p>
       <h2>Examples</h2>
+      <p>{{ $store.state.result.data.example }}</p>
       <h2>Improve this page</h2>
       <p>Answer these questions:</p>
       <p>List of questions</p>

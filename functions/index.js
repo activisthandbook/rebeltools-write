@@ -41,7 +41,7 @@ exports.testFunction = functions
             introduction: introduction,
             impact: impact,
             organise: organise,
-            example: organise,
+            example: example,
           };
 
           resultRef
