@@ -45,7 +45,7 @@ exports.testFunction = functions
       });
   });
 
-function writeTacticIntroduction(data) {
+async function writeTacticIntroduction(data) {
   openai
     .createCompletion("text-davinci-002", {
       prompt:

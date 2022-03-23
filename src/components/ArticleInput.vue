@@ -70,6 +70,7 @@ export default {
 
           onSnapshot(doc(db, "results", id), (doc) => {
             console.log("Current data: ", doc.data());
+            this.$store.commit("result/addResult", doc.data());
           });
         })
         .catch((error) => {

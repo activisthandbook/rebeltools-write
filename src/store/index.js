@@ -1,7 +1,9 @@
 import { store } from "quasar/wrappers";
 import { createStore } from "vuex";
+
 import firebase from "./firebase";
 import auth from "./auth";
+import result from "./result";
 
 // import example from './module-example'
 
@@ -19,6 +21,7 @@ export default store(function (/* { ssrContext } */) {
     modules: {
       firebase,
       auth,
+      result,
     },
 
     // enable strict mode (adds overhead!)
