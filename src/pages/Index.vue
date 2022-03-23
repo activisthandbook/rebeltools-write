@@ -21,15 +21,13 @@ export default defineComponent({
         this.$store.state.firebase.functions,
         "testFunction"
       );
-      testFunction().then((result) => {
-        const locationData = result.data;
-        this.$store.commit("currentUser/update", {
-          location: {
-            ...locationData,
-            geohash: geohashForLocation([locationData.lat, locationData.long]),
-          },
+      testFunction()
+        .then((result) => {
+          console.log(result.data);
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      });
     },
   },
 });

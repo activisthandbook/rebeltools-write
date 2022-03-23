@@ -11,11 +11,12 @@ exports.testFunction = functions
 
     const envRef = db.collection("rebeltools-write").doc("env");
 
-    envRef
+    return envRef
       .get()
       .then((doc) => {
         if (!doc.exists) {
-          functions.logger.info("env not found");
+          functions.logger.error("env not found");
+          return "env not found";
         } else {
           functions.logger.info("env contents", doc.data());
 
@@ -36,10 +37,12 @@ exports.testFunction = functions
             })
             .catch((error) => {
               functions.logger.error("error", error);
+              return error;
             });
         }
       })
       .catch((error) => {
         functions.logger.error("error", error);
+        return error;
       });
   });
