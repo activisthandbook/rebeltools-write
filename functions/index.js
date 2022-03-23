@@ -48,7 +48,7 @@ exports.testFunction = functions
   });
 
 async function writeTacticIntroduction(data) {
-  openai
+  return await openai
     .createCompletion("text-davinci-002", {
       prompt:
         "Write a short introduction for a guide about '" + data.topic + " '.",
