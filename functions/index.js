@@ -9,7 +9,7 @@ let openai = null;
 
 exports.testFunction = functions
   .region("europe-west1")
-  .https.onCall((data, context) => {
+  .https.onCall(async (data, context) => {
     functions.logger.info("🔥 testFunction started", data);
 
     const envRef = db.collection("rebeltools-write").doc("env");
@@ -17,7 +17,7 @@ exports.testFunction = functions
 
     return envRef
       .get()
-      .then((doc) => {
+      .then(async (doc) => {
         if (!doc.exists) {
           functions.logger.error("🔴 env not found");
           return "env not found";
@@ -30,9 +30,11 @@ exports.testFunction = functions
 
           openai = new OpenAIApi(configuration);
 
+          const introduction = await writeTacticIntroduction(data);
+
           resultRef
             .set({
-              introduction: writeTacticIntroduction(data),
+              introduction: introduction,
             })
             .catch((error) => {
               functions.logger.error("🔴 Error in setting result data", error);
