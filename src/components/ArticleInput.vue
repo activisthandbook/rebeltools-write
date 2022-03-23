@@ -36,7 +36,7 @@
         <q-btn
           color="primary"
           label="Generate text"
-          @click="testFunction()"
+          @click="generateText()"
           :disable="!topic || !consent"
           no-caps
         />
@@ -58,7 +58,7 @@ export default {
     };
   },
   methods: {
-    testFunction() {
+    generateText() {
       const testFunction = httpsCallable(
         this.$store.state.firebase.functions,
         "testFunction"
@@ -66,10 +66,7 @@ export default {
       const id = this.makeid();
       testFunction({ id: id, type: this.type, topic: this.topic })
         .then((result) => {
-          console.log(result);
-
           onSnapshot(doc(db, "results", id), (doc) => {
-            console.log("Current data: ", doc.data());
             this.$store.commit("result/addResult", doc.data());
           });
         })

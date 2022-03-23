@@ -1,9 +1,11 @@
 export default {
   namespaced: true,
-  state: {},
+  state: {
+    data: null,
+  },
   mutations: {
     addResult(state, result) {
-      state = result;
+      state.data = result;
     },
   },
 };

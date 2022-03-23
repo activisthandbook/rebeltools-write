@@ -1,8 +1,10 @@
 <template>
-  <q-card>
+  <q-card v-if="$store.state.result.data">
     <q-card-section>
       <h1>Title</h1>
-      <p>Introduction</p>
+      <p>
+        <strong>{{ $store.state.result.data.introduction }}</strong>
+      </p>
       <h2>Potential impact</h2>
       <h2>Resources needed</h2>
       <h2>How to organise</h2>

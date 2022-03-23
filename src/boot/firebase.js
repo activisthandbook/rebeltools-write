@@ -56,11 +56,9 @@ export default boot(async ({ store }) => {
   signInAnonymously(getAuth())
     .then((response) => {
       // Signed in with anonymous account
-      console.log("succes!");
       store.commit("auth/signin", response.user);
     })
     .catch((error) => {
-      console.log(error);
       // const errorCode = error.code;
       Notify.create({
         message: error.message + " (firebase.js)",

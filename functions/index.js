@@ -31,13 +31,22 @@ exports.testFunction = functions
           openai = new OpenAIApi(configuration);
 
           const introduction = await writeTacticIntroduction(data);
+          const impact = await writeTacticImpact(data);
+
+          const fullResponse = {
+            introduction: introduction,
+            impact: impact,
+          };
 
           resultRef
-            .set({
-              introduction: introduction,
+            .set(fullResponse)
+            .then(() => {
+              functions.logger.info("🟢 Response saved!", fullResponse);
+              return fullResponse;
             })
             .catch((error) => {
               functions.logger.error("🔴 Error in setting result data", error);
+              return error;
             });
         }
       })
@@ -52,6 +61,23 @@ async function writeTacticIntroduction(data) {
     .createCompletion("text-davinci-002", {
       prompt:
         "Write a short introduction for a guide about '" + data.topic + " '.",
+      temperature: 0.5,
+      max_tokens: 120,
+    })
+    .then((response) => {
+      functions.logger.info("🟢 Response OpenAI", response.data);
+      return response.data.choices[0].text;
+    })
+    .catch((error) => {
+      functions.logger.error("🔴 Error in OpenAI", error);
+      return error;
+    });
+}
+
+async function writeTacticImpact(data) {
+  return await openai
+    .createCompletion("text-davinci-002", {
+      prompt: "What is the potential impact of a '" + data.topic + " '?",
       temperature: 0.5,
       max_tokens: 120,
     })
