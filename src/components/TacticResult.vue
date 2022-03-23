@@ -76,6 +76,15 @@
           >
           on Activist Handbook.
         </p>
+        <h2>Attribution</h2>
+        <p>
+          The <a href="https://write.rebel.tools/">Rebel Write</a> tool was used
+          to help write this article using artificial intelligence. This content
+          is available under a
+          <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+            >Creative Commons licence</a
+          >.
+        </p>
       </div>
     </q-card-section>
   </q-card>

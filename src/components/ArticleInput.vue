@@ -37,6 +37,34 @@
             disable
             color="secondary"
           />
+          <q-radio
+            v-model="type"
+            val="communication"
+            label="Communication"
+            disable
+            color="secondary"
+          />
+          <q-radio
+            v-model="type"
+            val="tools"
+            label="Tools"
+            disable
+            color="secondary"
+          />
+          <q-radio
+            v-model="type"
+            val="cause"
+            label="Cause"
+            disable
+            color="secondary"
+          />
+          <q-radio
+            v-model="type"
+            val="organising"
+            label="Organising"
+            disable
+            color="secondary"
+          />
           <div class="text-caption">
             Only writing about tactics is currently supported.
           </div>
@@ -45,25 +73,44 @@
         <q-card bordered flat>
           <q-card-section>
             <div class="q-gutter-y-sm">
-              <div class="text-caption">Usage terms & privacy policy</div>
-              <div class="text-bold">
-                This text is generated using artificial intelligence (powered by
-                OpenAI, Davinci model). You may not publish this text anywhere
-                without proofreading and factchecking everything. Only use this
-                tool to get inspiration for writing your articles. In addition,
-                you must adhere to the
-                <a href="https://beta.openai.com/docs/usage-guidelines"
-                  >OpenAI usage guidelines</a
-                >.
+              <div class="text-caption">
+                Read these usage terms carefully before using!
               </div>
               <div class="text-bold">
-                Your input and the generated articles will be stored on our
-                servers and linked to your account.
+                <ul>
+                  <li>
+                    The output is generated using artificial intelligence (AI).
+                  </li>
+                  <li>
+                    Make sure to proofread and check facts. Do not copy & paste
+                    the text it produces. Only use it to brainstorm and get
+                    inspiration about the topic you want to write about. In
+                    addition, you must adhere to the
+                    <a href="https://beta.openai.com/docs/usage-guidelines"
+                      >OpenAI usage guidelines</a
+                    >.
+                  </li>
+                  <li>
+                    The generated text is available under a
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+                      >Creative Commons licence</a
+                    >. In short, this means you are free to share and adapt it,
+                    as long as you give appropriate credit, use it for
+                    non-commercial purposes, and share it under the same
+                    licence. You must always say you made use of artificial
+                    intelligence.
+                  </li>
+                  <li>
+                    Your input and the generated articles will be stored on our
+                    servers and linked to your account. This data will be used
+                    to improve this tool.
+                  </li>
+                </ul>
               </div>
               <q-checkbox
                 v-model="consent"
                 color="secondary"
-                label="I accept the usage terms & privacy policy."
+                label="I accept these usage terms"
               />
             </div>
           </q-card-section>
@@ -75,7 +122,7 @@
           @click="generateText()"
           :disable="!topic || !consent"
           no-caps
-          :loading="dataLoading || (!dataLoading && !$store.state.result.data)"
+          :loading="dataLoading || (!dataLoading && $store.state.result.data)"
         >
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left" />
@@ -84,7 +131,7 @@
         </q-btn>
         <div
           class="text-body2"
-          v-if="dataLoading || (!dataLoading && !$store.state.result.data)"
+          v-if="dataLoading || (!dataLoading && $store.state.result.data)"
         >
           Generating an article out of thin air takes a bit of time. Just wait &
           see this magic article generator do its work...

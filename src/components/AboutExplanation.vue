@@ -40,6 +40,12 @@
             >Activist Handbook</a
           >, the Wikipedia for activists.
         </div>
+        <div>
+          Have feedback? Let us know:
+          <a href="mailto:hey@rebel.tools" style="color: white"
+            >hey@rebel.tools</a
+          >
+        </div>
       </div>
     </q-card-section>
   </q-card>
