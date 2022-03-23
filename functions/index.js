@@ -4,6 +4,9 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 const db = admin.firestore();
 
+let configuration = null;
+let openai = null;
+
 exports.testFunction = functions
   .region("europe-west1")
   .https.onCall((data, context) => {
@@ -21,31 +24,18 @@ exports.testFunction = functions
         } else {
           functions.logger.info("🟢 env contents", doc.data());
 
-          const configuration = new Configuration({
+          configuration = new Configuration({
             apiKey: doc.data().OPENAI_API_KEY,
           });
 
-          const openai = new OpenAIApi(configuration);
-          openai
-            .createCompletion("text-davinci-002", {
-              prompt: "Say this is a test",
-              temperature: 0,
-              max_tokens: 6,
-            })
-            .then((response) => {
-              functions.logger.info("🟢 Response OpenAI", response.data);
+          openai = new OpenAIApi(configuration);
 
-              resultRef.set(response.data).catch((error) => {
-                functions.logger.error(
-                  "🔴 Error in setting result data",
-                  error
-                );
-              });
-              return response.data;
+          resultRef
+            .set({
+              introduction: writeTacticIntroduction(data),
             })
             .catch((error) => {
-              functions.logger.error("🔴 Error in OpenAI", error);
-              return error;
+              functions.logger.error("🔴 Error in setting result data", error);
             });
         }
       })
@@ -54,3 +44,21 @@ exports.testFunction = functions
         return error;
       });
   });
+
+function writeTacticIntroduction(data) {
+  openai
+    .createCompletion("text-davinci-002", {
+      prompt:
+        "Write a short introduction for a guide about '" + data.topic + " '.",
+      temperature: 0.5,
+      max_tokens: 120,
+    })
+    .then((response) => {
+      functions.logger.info("🟢 Response OpenAI", response.data);
+      return response.data.choices[0].text;
+    })
+    .catch((error) => {
+      functions.logger.error("🔴 Error in OpenAI", error);
+      return error;
+    });
+}

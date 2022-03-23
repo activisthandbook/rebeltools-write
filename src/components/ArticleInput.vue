@@ -3,7 +3,11 @@
     <q-card-section>
       <div class="q-gutter-sm">
         <div class="text-bold">What do you want to write about?</div>
-        <q-input label="Topic" />
+        <q-input
+          label="Article topic"
+          hint="Examples: petition, protest march, Extinction Rebellion"
+          v-model="topic"
+        />
         <div>
           <q-radio v-model="type" val="tactic" label="Tactic" />
           <q-radio v-model="type" val="book" label="Book" />
@@ -29,18 +33,61 @@
             />
           </q-card-section>
         </q-card>
-        <q-btn color="primary" label="Generate text" />
+        <q-btn
+          color="primary"
+          label="Generate text"
+          @click="testFunction()"
+          :disable="!topic || !consent"
+          no-caps
+        />
       </div>
     </q-card-section>
   </q-card>
 </template>
 <script>
+import { httpsCallable } from "firebase/functions";
+import { doc, onSnapshot, getFirestore } from "firebase/firestore";
+const db = getFirestore();
+
 export default {
   data() {
     return {
       consent: false,
+      topic: "",
       type: "tactic",
     };
+  },
+  methods: {
+    testFunction() {
+      const testFunction = httpsCallable(
+        this.$store.state.firebase.functions,
+        "testFunction"
+      );
+      const id = this.makeid();
+      testFunction({ id: id, type: this.type, topic: this.topic })
+        .then((result) => {
+          console.log(result);
+
+          onSnapshot(doc(db, "results", id), (doc) => {
+            console.log("Current data: ", doc.data());
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    makeid() {
+      var result = "";
+      var characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var charactersLength = characters.length;
+      for (var i = 0; i < 30; i++) {
+        result += characters.charAt(
+          Math.floor(Math.random() * charactersLength)
+        );
+      }
+      return result;
+    },
   },
 };
 </script>

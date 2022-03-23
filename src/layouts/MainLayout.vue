@@ -7,19 +7,17 @@
     </q-header>
 
     <q-page-container>
-      <q-page padding>
-        <article-input />
-        <router-view />
+      <q-page padding style="max-width: 700px; margin: auto">
+        <div class="q-gutter-md">
+          <router-view />
+        </div>
       </q-page>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-import ArticleInput from "components/ArticleInput";
-
 export default {
   name: "MainLayout",
-  components: { ArticleInput },
 };
 </script>
