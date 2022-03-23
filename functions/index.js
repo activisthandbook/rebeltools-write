@@ -7,7 +7,7 @@ const db = admin.firestore();
 exports.testFunction = functions
   .region("europe-west1")
   .https.onCall((data, context) => {
-    functions.logger.info("testfunction started", data);
+    functions.logger.info("🔥 testFunction started", data);
 
     const envRef = db.collection("rebeltools-write").doc("env");
     const resultRef = db.collection("results").doc(data.id);
@@ -16,10 +16,10 @@ exports.testFunction = functions
       .get()
       .then((doc) => {
         if (!doc.exists) {
-          functions.logger.error("env not found");
+          functions.logger.error("🔴 env not found");
           return "env not found";
         } else {
-          functions.logger.info("env contents", doc.data());
+          functions.logger.info("🟢 env contents", doc.data());
 
           const configuration = new Configuration({
             apiKey: doc.data().OPENAI_API_KEY,
@@ -33,21 +33,24 @@ exports.testFunction = functions
               max_tokens: 6,
             })
             .then((response) => {
-              functions.logger.info("response", response.data);
+              functions.logger.info("🟢 Response OpenAI", response.data);
 
               resultRef.set(response.data).catch((error) => {
-                functions.logger.error("Error in setting result data", error);
+                functions.logger.error(
+                  "🔴 Error in setting result data",
+                  error
+                );
               });
               return response.data;
             })
             .catch((error) => {
-              functions.logger.error("error", error);
+              functions.logger.error("🔴 Error in OpenAI", error);
               return error;
             });
         }
       })
       .catch((error) => {
-        functions.logger.error("error", error);
+        functions.logger.error("🔴 Error in getting env", error);
         return error;
       });
   });
