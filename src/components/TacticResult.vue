@@ -26,7 +26,9 @@
         </p>
         <h2>Improve this page</h2>
         <p>Answer these questions:</p>
-        <p>{{ $store.state.result.data.improve.substring(2) }}</p>
+        <p style="white-space: break-spaces">
+          {{ $store.state.result.data.improve.substring(2) }}
+        </p>
         <h2>External resources</h2>
         <p>
           See relevant

@@ -93,7 +93,7 @@ async function writeTacticImpact(data) {
         data.topic +
         " ' and how can I make them more impactful?",
       temperature: 0.5,
-      max_tokens: 120,
+      max_tokens: 250,
     })
     .then((response) => {
       return response.data.choices[0].text;
@@ -126,7 +126,7 @@ async function writeTacticOrganise(data) {
     .createCompletion("text-davinci-002", {
       prompt: "How do activists organise a'" + data.topic + " '?",
       temperature: 0.5,
-      max_tokens: 120,
+      max_tokens: 250,
     })
     .then((response) => {
       return response.data.choices[0].text;
@@ -160,9 +160,9 @@ async function writeTacticImprove(data) {
   return await openai
     .createCompletion("text-davinci-002", {
       prompt:
-        "List questions that activists may have about " + data.topic + " '.",
+        "List 6 questions that activists may have about " + data.topic + " '.",
       temperature: 0.5,
-      max_tokens: 120,
+      max_tokens: 250,
     })
     .then((response) => {
       return response.data.choices[0].text;
