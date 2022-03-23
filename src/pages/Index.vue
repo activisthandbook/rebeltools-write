@@ -1,7 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
-    <q-btn label="Test function" @click="testFunction()" />
-  </q-page>
+  <q-btn label="Test function" @click="testFunction()" />
 </template>
 
 <script>

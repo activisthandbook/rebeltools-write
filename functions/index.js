@@ -7,7 +7,7 @@ const db = admin.firestore();
 exports.testFunction = functions
   .region("europe-west1")
   .https.onCall((data, context) => {
-    functions.logger.info("testfunction started", context.rawRequest.headers);
+    functions.logger.info("testfunction started", data);
 
     const envRef = db.collection("rebeltools-write").doc("env");
     const resultRef = db.collection("results").doc(data.id);
