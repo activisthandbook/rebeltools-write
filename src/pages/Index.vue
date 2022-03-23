@@ -21,7 +21,7 @@ export default defineComponent({
       );
       testFunction({ id: this.makeid() })
         .then((result) => {
-          console.log(result.data);
+          console.log(result);
         })
         .catch((error) => {
           console.log(error);

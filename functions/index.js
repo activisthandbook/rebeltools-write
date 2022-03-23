@@ -33,12 +33,12 @@ exports.testFunction = functions
               max_tokens: 6,
             })
             .then((response) => {
-              functions.logger.info("response", response);
+              functions.logger.info("response", response.data);
 
-              resultRef.set(response).catch((error) => {
+              resultRef.set(response.data).catch((error) => {
                 functions.logger.error("Error in setting result data", error);
               });
-              return response;
+              return response.data;
             })
             .catch((error) => {
               functions.logger.error("error", error);
