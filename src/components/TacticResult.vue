@@ -6,6 +6,7 @@
         <strong>{{ $store.state.result.data.introduction }}</strong>
       </p>
       <h2>Potential impact</h2>
+      <p>{{ $store.state.result.data.impact }}</p>
       <h2>Resources needed</h2>
       <h2>How to organise</h2>
       <h2>Examples</h2>

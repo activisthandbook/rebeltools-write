@@ -32,10 +32,16 @@ exports.testFunction = functions
 
           const introduction = await writeTacticIntroduction(data);
           const impact = await writeTacticImpact(data);
+          const organise = await writeTacticOrganise(data);
+          const example = await writeTacticExample(data);
 
           const fullResponse = {
+            topic: data.topic,
+            type: data.type,
             introduction: introduction,
             impact: impact,
+            organise: organise,
+            example: organise,
           };
 
           resultRef
@@ -65,7 +71,6 @@ async function writeTacticIntroduction(data) {
       max_tokens: 120,
     })
     .then((response) => {
-      functions.logger.info("🟢 Response OpenAI", response.data);
       return response.data.choices[0].text;
     })
     .catch((error) => {
@@ -77,12 +82,49 @@ async function writeTacticIntroduction(data) {
 async function writeTacticImpact(data) {
   return await openai
     .createCompletion("text-davinci-002", {
-      prompt: "What is the potential impact of a '" + data.topic + " '?",
+      prompt:
+        "How effective are '" +
+        data.topic +
+        " ' and how can I make them more impactful?",
       temperature: 0.5,
       max_tokens: 120,
     })
     .then((response) => {
-      functions.logger.info("🟢 Response OpenAI", response.data);
+      return response.data.choices[0].text;
+    })
+    .catch((error) => {
+      functions.logger.error("🔴 Error in OpenAI", error);
+      return error;
+    });
+}
+
+async function writeTacticOrganise(data) {
+  return await openai
+    .createCompletion("text-davinci-002", {
+      prompt: "How do activists organise a'" + data.topic + " '?",
+      temperature: 0.5,
+      max_tokens: 120,
+    })
+    .then((response) => {
+      return response.data.choices[0].text;
+    })
+    .catch((error) => {
+      functions.logger.error("🔴 Error in OpenAI", error);
+      return error;
+    });
+}
+
+async function writeTacticExample(data) {
+  return await openai
+    .createCompletion("text-davinci-002", {
+      prompt:
+        "Where can I find examples for activists of a successful " +
+        data.topic +
+        " '?",
+      temperature: 0.5,
+      max_tokens: 120,
+    })
+    .then((response) => {
       return response.data.choices[0].text;
     })
     .catch((error) => {
