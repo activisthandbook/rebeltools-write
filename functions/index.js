@@ -74,7 +74,7 @@ async function writeTacticIntroduction(data) {
         data.topic +
         " '.",
       temperature: 0.5,
-      max_tokens: 120,
+      max_tokens: 250,
     })
     .then((response) => {
       return response.data.choices[0].text;

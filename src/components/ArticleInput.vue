@@ -75,13 +75,20 @@
           @click="generateText()"
           :disable="!topic || !consent"
           no-caps
-          :loading="dataLoading || (!dataLoading && $store.state.result.data)"
+          :loading="dataLoading || (!dataLoading && !$store.state.result.data)"
         >
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left" />
             Generating article...
           </template>
         </q-btn>
+        <div
+          class="text-body2"
+          v-if="dataLoading || (!dataLoading && !$store.state.result.data)"
+        >
+          Generating an article out of thin air takes a bit of time. Just wait &
+          see this magic article generator do its work...
+        </div>
       </div>
     </q-card-section>
   </q-card>
