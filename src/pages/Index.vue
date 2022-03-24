@@ -43,11 +43,13 @@ export default {
           // const credential = GoogleAuthProvider.credentialFromResult(result);
           // The signed-in user info.
           this.$store.commit("auth/signin", result.user);
+          this.$q.notify("Signin succesful");
           // ...
         })
         .catch((error) => {
           // Handle Errors here.
           console.log(error);
+          this.$q.notify("Something went wrong signin in");
           // const errorCode = error.code;
           // const errorMessage = error.message;
           // The email of the user's account used.
