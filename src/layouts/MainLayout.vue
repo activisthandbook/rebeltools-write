@@ -3,6 +3,14 @@
     <q-header elevated>
       <q-toolbar>
         <q-toolbar-title>Rebel Write</q-toolbar-title>
+        <q-btn
+          v-show="$store.state.auth.data.emailVerified"
+          @click="$store.dispatch('auth/signOut')"
+          label="Sign out"
+          no-caps
+          color="white"
+          text-color="black"
+        />
       </q-toolbar>
     </q-header>
 

@@ -1,13 +1,61 @@
 <template>
-  <q-card>
+  <q-card v-show="!next">
+    <q-card-section>
+      <div class="q-gutter-y-sm">
+        <h2>Terms of use</h2>
+        <div>The following is important to know:</div>
+        <ul>
+          <li>The output is generated using artificial intelligence (AI).</li>
+          <li>
+            Make sure to proofread and check facts. Do not copy & paste the text
+            it produces. Only use it to brainstorm and get inspiration about the
+            topic you want to write about. In addition, you must adhere to the
+            <a href="https://beta.openai.com/docs/usage-guidelines"
+              >OpenAI usage guidelines</a
+            >.
+          </li>
+          <li>
+            The generated text is available under a
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+              >Creative Commons licence</a
+            >. In short, this means you are free to share and adapt it, as long
+            as you give appropriate credit, use it for non-commercial purposes,
+            and share it under the same licence. You must always say you made
+            use of artificial intelligence.
+          </li>
+          <li>
+            Your input and the generated articles will be stored on our servers
+            and linked to your account. This data will be used to improve this
+            tool.
+          </li>
+        </ul>
+        <q-checkbox
+          v-model="consent"
+          color="secondary"
+          class="text-bold"
+          label="I understand and accept these terms"
+        />
+        <q-btn
+          label="Start writing"
+          @click="next = true"
+          class="full-width"
+          color="secondary"
+          :disable="!consent"
+          no-caps
+        />
+      </div>
+    </q-card-section>
+  </q-card>
+  <q-card v-show="next">
     <q-card-section>
       <div class="q-gutter-y-md">
-        <div class="text-bold">What do you want to write about?</div>
+        <h2>What do you want <br />to write about?</h2>
         <q-input
           label="Article topic"
           hint="Examples: petition, protest march, Extinction Rebellion"
           v-model="topic"
           color="secondary"
+          outlined
         />
         <div>
           <q-radio
@@ -70,51 +118,6 @@
           </div>
         </div>
 
-        <q-card bordered flat>
-          <q-card-section>
-            <div class="q-gutter-y-sm">
-              <div class="text-caption">
-                Read these usage terms carefully before using!
-              </div>
-              <div class="text-bold">
-                <ul>
-                  <li>
-                    The output is generated using artificial intelligence (AI).
-                  </li>
-                  <li>
-                    Make sure to proofread and check facts. Do not copy & paste
-                    the text it produces. Only use it to brainstorm and get
-                    inspiration about the topic you want to write about. In
-                    addition, you must adhere to the
-                    <a href="https://beta.openai.com/docs/usage-guidelines"
-                      >OpenAI usage guidelines</a
-                    >.
-                  </li>
-                  <li>
-                    The generated text is available under a
-                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
-                      >Creative Commons licence</a
-                    >. In short, this means you are free to share and adapt it,
-                    as long as you give appropriate credit, use it for
-                    non-commercial purposes, and share it under the same
-                    licence. You must always say you made use of artificial
-                    intelligence.
-                  </li>
-                  <li>
-                    Your input and the generated articles will be stored on our
-                    servers and linked to your account. This data will be used
-                    to improve this tool.
-                  </li>
-                </ul>
-              </div>
-              <q-checkbox
-                v-model="consent"
-                color="secondary"
-                label="I accept these usage terms"
-              />
-            </div>
-          </q-card-section>
-        </q-card>
         <q-btn
           color="secondary"
           label="Generate article"
@@ -148,6 +151,7 @@ const db = getFirestore();
 export default {
   data() {
     return {
+      next: false,
       consent: false,
       dataLoading: false,
       topic: "",

@@ -31,7 +31,7 @@ export default {
     },
     destroy(state) {
       state.dataLoaded = false;
-      state.data = null;
+      state.data = {};
     },
   },
   actions: {

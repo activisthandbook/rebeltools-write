@@ -1,5 +1,5 @@
 <template>
-  <q-card class="bg-secondary" dark>
+  <q-card bordered flat>
     <q-card-section>
       <div class="q-gutter-y-sm">
         <h2>About this tool</h2>
@@ -30,21 +30,17 @@
           <a
             href="https://github.com/activisthandbook/rebeltools-write/"
             target="_blank"
-            style="color: white"
             >GitHub repository</a
           >. This tool was developed by the people behind
           <a
             href="https://github.com/activisthandbook/rebeltools-write/"
             target="_blank"
-            style="color: white"
             >Activist Handbook</a
           >, the Wikipedia for activists.
         </div>
         <div>
           Have feedback? Let us know:
-          <a href="mailto:hey@rebel.tools" style="color: white"
-            >hey@rebel.tools</a
-          >
+          <a href="mailto:hey@rebel.tools">hey@rebel.tools</a>
         </div>
       </div>
     </q-card-section>

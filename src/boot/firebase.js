@@ -53,37 +53,39 @@ export default boot(async ({ store }) => {
   Docs: https://firebase.google.com/docs/auth
   */
 
-  signInAnonymously(getAuth())
-    .then((response) => {
-      // Signed in with anonymous account
-      store.commit("auth/signin", response.user);
-    })
-    .catch((error) => {
-      // const errorCode = error.code;
-      Notify.create({
-        message: error.message + " (firebase.js)",
-        icon: "mdi-alert",
-      });
-    });
+  // signInAnonymously(getAuth())
+  //   .then((response) => {
+  //     // Signed in with anonymous account
+  //     store.commit("auth/signin", response.user);
+  //   })
+  //   .catch((error) => {
+  //     // const errorCode = error.code;
+  //     Notify.create({
+  //       message: error.message + " (firebase.js)",
+  //       icon: "mdi-alert",
+  //     });
+  //   });
+  store.commit("firebase/addAuth", getAuth());
 
-  // onAuthStateChanged(store.state.firebase.auth, (user) => {
-  //   if (user) {
-  //     /* SIGNIN SUCCESFUL ✅
-  //     User is signed in, see docs for a list of available properties:
-  //     https://firebase.google.com/docs/reference/js/firebase.User */
-  //     // Store the user data in Vuex
-  //     // store.commit("auth/signin", user);
-  //     /* Future logged events will be linked to the user ID:
-  //     https://firebase.google.com/docs/analytics/userid */
-  //     // setUserId(store.state.firebase.analytics, user.uid);
-  //   } else {
-  //     /* NOT SIGNED IN ❌
-  //     This may seem a bit counterintuitive, but we always want to make sure users are signed in. Even if they don't have an account, we will sign them in, but with an anonymous Firebase account. */
-  //     // Log 'signout' event to analytics
-  //     // logEvent(store.state.firebase.analytics, "signout");
-  //     // ..
-  //   }
-  // });
+  onAuthStateChanged(store.state.firebase.auth, (user) => {
+    if (user) {
+      /* SIGNIN SUCCESFUL ✅
+      User is signed in, see docs for a list of available properties:
+      https://firebase.google.com/docs/reference/js/firebase.User */
+      // Store the user data in Vuex
+      store.commit("auth/signin", user);
+      /* Future logged events will be linked to the user ID:
+      https://firebase.google.com/docs/analytics/userid */
+      // setUserId(store.state.firebase.analytics, user.uid);
+    } else {
+      store.commit("auth/destroy");
+      /* NOT SIGNED IN ❌
+      This may seem a bit counterintuitive, but we always want to make sure users are signed in. Even if they don't have an account, we will sign them in, but with an anonymous Firebase account. */
+      // Log 'signout' event to analytics
+      // logEvent(store.state.firebase.analytics, "signout");
+      // ..
+    }
+  });
 
   /* 📶 OFFLINE PERSISTANCE FIRESTORE
   Docs: https://firebase.google.com/docs/firestore/manage-data/enable-offline
