@@ -12,69 +12,67 @@ exports.testFunction = functions
   .region("europe-west1")
   .https.onCall(async (data, context) => {
     functions.logger.info("🔥 testFunction started", data);
+    functions.logger.info("🔥 auth data", context.auth);
 
-    if (context.auth.emailVerified) {
-      const envRef = db.collection("rebeltools-write").doc("env");
-      const resultRef = db.collection("results").doc(data.id);
+    // if (context.auth.emailVerified) {
+    const envRef = db.collection("rebeltools-write").doc("env");
+    const resultRef = db.collection("results").doc(data.id);
 
-      return envRef
-        .get()
-        .then(async (doc) => {
-          if (!doc.exists) {
-            functions.logger.error("🔴 env not found");
-            return "env not found";
-          } else {
-            functions.logger.info("🟢 env contents", doc.data());
+    return envRef
+      .get()
+      .then(async (doc) => {
+        if (!doc.exists) {
+          functions.logger.error("🔴 env not found");
+          return "env not found";
+        } else {
+          functions.logger.info("🟢 env contents", doc.data());
 
-            configuration = new Configuration({
-              apiKey: doc.data().OPENAI_API_KEY,
+          configuration = new Configuration({
+            apiKey: doc.data().OPENAI_API_KEY,
+          });
+
+          openai = new OpenAIApi(configuration);
+
+          const introduction = await writeTacticIntroduction(data);
+          const impact = await writeTacticImpact(data);
+          const resourcesNeeded = await writeTacticResourcesNeeded(data);
+          const organise = await writeTacticOrganise(data);
+          const example = await writeTacticExample(data);
+          const improve = await writeTacticImprove(data);
+
+          const fullResponse = {
+            user: context.auth.uid,
+            timestamp: FieldValue.serverTimestamp(),
+            topic: data.topic,
+            type: data.type,
+            introduction: introduction,
+            impact: impact,
+            resourcesNeeded: resourcesNeeded,
+            organise: organise,
+            example: example,
+            improve: improve,
+          };
+
+          resultRef
+            .set(fullResponse)
+            .then(() => {
+              functions.logger.info("🟢 Response saved!", fullResponse);
+              return fullResponse;
+            })
+            .catch((error) => {
+              functions.logger.error("🔴 Error in setting result data", error);
+              return error;
             });
-
-            openai = new OpenAIApi(configuration);
-
-            const introduction = await writeTacticIntroduction(data);
-            const impact = await writeTacticImpact(data);
-            const resourcesNeeded = await writeTacticResourcesNeeded(data);
-            const organise = await writeTacticOrganise(data);
-            const example = await writeTacticExample(data);
-            const improve = await writeTacticImprove(data);
-
-            const fullResponse = {
-              user: context.auth.uid,
-              timestamp: FieldValue.serverTimestamp(),
-              topic: data.topic,
-              type: data.type,
-              introduction: introduction,
-              impact: impact,
-              resourcesNeeded: resourcesNeeded,
-              organise: organise,
-              example: example,
-              improve: improve,
-            };
-
-            resultRef
-              .set(fullResponse)
-              .then(() => {
-                functions.logger.info("🟢 Response saved!", fullResponse);
-                return fullResponse;
-              })
-              .catch((error) => {
-                functions.logger.error(
-                  "🔴 Error in setting result data",
-                  error
-                );
-                return error;
-              });
-          }
-        })
-        .catch((error) => {
-          functions.logger.error("🔴 Error in getting env", error);
-          return error;
-        });
-    } else {
-      // User not signed in
-      return "not signed in";
-    }
+        }
+      })
+      .catch((error) => {
+        functions.logger.error("🔴 Error in getting env", error);
+        return error;
+      });
+    // } else {
+    // User not signed in
+    // return "not signed in";
+    // }
   });
 
 async function writeTacticIntroduction(data) {
