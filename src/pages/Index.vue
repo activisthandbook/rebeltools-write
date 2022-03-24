@@ -21,6 +21,7 @@
   <article-input v-if="$store.state.auth.data.emailVerified" />
   <tactic-result v-if="$store.state.auth.data.emailVerified" />
   <about-explanation />
+  <!-- <subscribe-options /> -->
 </template>
 
 <script>
@@ -31,10 +32,16 @@ const auth = getAuth();
 import ArticleInput from "components/ArticleInput";
 import TacticResult from "components/TacticResult";
 import AboutExplanation from "components/AboutExplanation";
+// import SubscribeOptions from "components/SubscribeOptions";
 
 export default {
   name: "PageIndex",
-  components: { ArticleInput, TacticResult, AboutExplanation },
+  components: {
+    ArticleInput,
+    TacticResult,
+    AboutExplanation,
+    // SubscribeOptions,
+  },
   methods: {
     signin() {
       signInWithPopup(auth, provider)
@@ -62,20 +69,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.gradient-text {
-  /* Fallback: Set a background color. */
-  background-color: #d70057;
-
-  background-image: linear-gradient(45deg, #d70057, #0431ea);
-  background-size: 100%;
-  background-repeat: repeat;
-
-  /* Use the text as a mask for the background. */
-  /* This will show the gradient as a text color rather than element bg. */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-background-clip: text;
-  -moz-text-fill-color: transparent;
-}
-</style>

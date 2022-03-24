@@ -17,11 +17,12 @@
           <li>
             The generated text is available under a
             <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
-              >Creative Commons licence</a
-            >. In short, this means you are free to share and adapt it, as long
-            as you give appropriate credit, use it for non-commercial purposes,
-            and share it under the same licence. You must always say you made
-            use of artificial intelligence.
+              >Creative Commons (BY-NC-SA 4.0)</a
+            >
+            licence. In short, this means you are free to share and adapt it, as
+            long as you give appropriate credit, use it for non-commercial
+            purposes, and share it under the same licence. You must always say
+            you made use of artificial intelligence.
           </li>
           <li>
             Your input and the generated articles will be stored on our servers
