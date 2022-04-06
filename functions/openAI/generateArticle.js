@@ -9,7 +9,7 @@ const FieldValue = admin.firestore.FieldValue;
 let configuration = null;
 let openai = null;
 
-exports.generateArticle = functions
+export default functions
   .region("europe-west1")
   .https.onCall(async (data, context) => {
     functions.logger.info("🔥 testFunction started", data);

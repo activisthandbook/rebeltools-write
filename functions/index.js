@@ -1,8 +1,8 @@
-const admin = require("firebase-admin");
+import admin from "firebase-admin";
 
 // 🔄 INITIALISATIONS
 admin.initializeApp();
 
-const generateArticle = require("./openAI/generateArticle");
+import generateArticle from "./openAI/generateArticle";
 
-exports.generateArticle = generateArticle.generateArticle;
+exports.generateArticle = generateArticle;
