@@ -10,16 +10,18 @@
       with an empty page. Having read over 350 billion words, this tool
       generates article outlines in seconds.
     </div>
-    <q-btn
-      v-show="!$store.state.auth.data.emailVerified"
-      @click="signin"
-      label="Sign in with Google"
-      no-caps
-      text-color="white"
-      class="gradient shadow-9 q-mb-lg"
-      padding="8px 24px"
-      flat
-    />
+    <div v-show="!$store.state.auth.data.emailVerified">
+      <q-btn
+        @click="signin"
+        label="Sign in with Google"
+        icon="mdi-account-circle"
+        no-caps
+        text-color="white"
+        class="gradient shadow-9 q-mb-lg"
+        padding="8px 24px"
+        flat
+      />
+    </div>
     <h2>Research & education</h2>
     <div>
       Humanity is facing major challanges. Rebel Write helps people explore ways

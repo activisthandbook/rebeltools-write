@@ -9,10 +9,16 @@
             </div>
             <h2>Hosting costs</h2>
             <div class="price">
-              <span>€</span><span>12</span>
+              <span>€</span><span>2</span>
               <div>monthly</div>
+              <q-chip
+                label="📝 20 articles"
+                class="q-mt-md"
+                size="sm"
+                outline
+              />
             </div>
-            <div class="q-gutter-y-sm q-mt-md">
+            <div class="q-gutter-y-sm q-mt-sm">
               <div class="text-body2">✅ Cover hosting costs</div>
               <div class="text-body2">❌ Our developer works for €0 hourly</div>
               <div class="text-body2">❌ No solidarity contribution</div>
@@ -37,8 +43,14 @@
             <div class="price">
               <span>€</span><span>16</span>
               <div>monthly</div>
+              <q-chip
+                label="📝 25 articles"
+                class="q-mt-md"
+                size="sm"
+                outline
+              />
             </div>
-            <div class="q-gutter-y-sm q-mt-md">
+            <div class="q-gutter-y-sm q-mt-sm">
               <div class="text-body2">✅ Cover hosting costs</div>
               <div class="text-body2">
                 ✅ Our developers can pay groceries & rent
@@ -65,8 +77,14 @@
             <div class="price">
               <span>€</span><span class="gradient-text">24</span>
               <div>monthly</div>
+              <q-chip
+                label="📝 100 articles"
+                class="q-mt-md gradient"
+                size="sm"
+                dark
+              />
             </div>
-            <div class="q-gutter-y-sm q-mt-md">
+            <div class="q-gutter-y-sm q-mt-sm">
               <div class="text-body2">✅ Cover hosting costs</div>
               <div class="text-body2">
                 ✅ Our developers can pay groceries & rent
