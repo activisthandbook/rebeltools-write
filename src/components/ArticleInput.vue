@@ -49,80 +49,53 @@
   </q-card>
   <q-card v-show="next">
     <q-card-section>
-      <div class="q-gutter-y-md">
-        <h2>What do you want <br />to write about?</h2>
+      <div>
+        <h2>Article generator</h2>
         <q-input
-          label="Article topic"
+          label="Topic"
           hint="Examples: petition, protest march, Extinction Rebellion"
           v-model="topic"
           color="secondary"
+          class="q-mt-md q-mb-sm"
           outlined
         />
         <div>
-          <q-radio
+          <div class="text-caption text-bold">
+            Article type (only tactics supported currently):
+          </div>
+          <q-chip
             v-model="type"
             val="tactic"
-            label="Tactic"
-            color="secondary"
+            label="Tactic 📣"
+            selected
+            class="text-bold"
           />
-          <q-radio
-            v-model="type"
-            val="book"
-            label="Book"
-            disable
-            color="secondary"
-          />
-          <q-radio
-            v-model="type"
-            val="movie"
-            label="Film"
-            disable
-            color="secondary"
-          />
-          <q-radio
-            v-model="type"
-            val="movement"
-            label="Movement"
-            disable
-            color="secondary"
-          />
-          <q-radio
+          <q-chip v-model="type" val="book" label="Book 📚" disable />
+          <q-chip v-model="type" val="movie" label="Film 🎬" disable />
+          <q-chip v-model="type" val="movement" label="Movement 🦋" disable />
+          <q-chip
             v-model="type"
             val="communication"
-            label="Communication"
+            label="Communication 💬"
             disable
-            color="secondary"
           />
-          <q-radio
-            v-model="type"
-            val="tools"
-            label="Tools"
-            disable
-            color="secondary"
-          />
-          <q-radio
-            v-model="type"
-            val="cause"
-            label="Cause"
-            disable
-            color="secondary"
-          />
-          <q-radio
+          <q-chip v-model="type" val="tools" label="Tools 🛠" disable />
+          <q-chip
             v-model="type"
             val="organising"
-            label="Organising"
+            label="Organising ⚡️"
             disable
-            color="secondary"
           />
-          <div class="text-caption">
+          <!-- <div class="text-caption">
             Only writing about tactics is currently supported.
-          </div>
+          </div> -->
         </div>
 
         <q-btn
-          color="secondary"
           label="Generate article"
-          class="full-width"
+          class="full-width gradient q-mt-md"
+          icon="mdi-auto-fix"
+          text-color="white"
           @click="generateText()"
           :disable="!topic || !consent"
           no-caps
@@ -152,7 +125,7 @@ const db = getFirestore();
 export default {
   data() {
     return {
-      next: false,
+      next: true,
       consent: false,
       dataLoading: false,
       topic: "",
