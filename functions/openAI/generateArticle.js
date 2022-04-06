@@ -1,7 +1,7 @@
-import functions from "firebase-functions";
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
 
-import { Configuration, OpenAIApi } from "openai";
-import admin from "firebase-admin";
+const { Configuration, OpenAIApi } = require("openai");
 
 const db = admin.firestore();
 const FieldValue = admin.firestore.FieldValue;
@@ -9,7 +9,7 @@ const FieldValue = admin.firestore.FieldValue;
 let configuration = null;
 let openai = null;
 
-export default functions
+exports.generateArticle = functions
   .region("europe-west1")
   .https.onCall(async (data, context) => {
     functions.logger.info("🔥 testFunction started", data);
