@@ -163,12 +163,12 @@ export default {
     generateText() {
       this.dataLoading = true;
 
-      const testFunction = httpsCallable(
+      const generateArticle = httpsCallable(
         this.$store.state.firebase.functions,
-        "testFunction"
+        "generateArticle"
       );
       const id = this.makeid();
-      testFunction({ id: id, type: this.type, topic: this.topic })
+      generateArticle({ id: id, type: this.type, topic: this.topic })
         .then((result) => {
           onSnapshot(doc(db, "results", id), (doc) => {
             this.$store.commit("result/addResult", doc.data());

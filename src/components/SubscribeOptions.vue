@@ -9,7 +9,7 @@
             </div>
             <h2>Hosting costs</h2>
             <div class="price">
-              <span>€</span><span>6</span>
+              <span>€</span><span>12</span>
               <div>monthly</div>
             </div>
             <div class="q-gutter-y-sm q-mt-md">
@@ -35,7 +35,7 @@
             </div>
             <h2>Fair wage</h2>
             <div class="price">
-              <span>€</span><span>12</span>
+              <span>€</span><span>16</span>
               <div>monthly</div>
             </div>
             <div class="q-gutter-y-sm q-mt-md">
