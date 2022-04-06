@@ -87,7 +87,7 @@ exports.generateArticle = functions
     }
   });
 
-async function writeTacticIntroduction(data) {
+async function writeTacticIntroduction(userID, data) {
   return await openai
     .createCompletion("text-davinci-002", {
       prompt:
@@ -127,7 +127,7 @@ async function writeTacticImpact(userID, data) {
     });
 }
 
-async function writeTacticResourcesNeeded(data) {
+async function writeTacticResourcesNeeded(userID, data) {
   return await openai
     .createCompletion("text-davinci-002", {
       prompt:
@@ -145,7 +145,7 @@ async function writeTacticResourcesNeeded(data) {
     });
 }
 
-async function writeTacticOrganise(data) {
+async function writeTacticOrganise(userID, data) {
   return await openai
     .createCompletion("text-davinci-002", {
       prompt: "How do activists organise a'" + data.topic + " '?",
@@ -162,7 +162,7 @@ async function writeTacticOrganise(data) {
     });
 }
 
-async function writeTacticExample(data) {
+async function writeTacticExample(userID, data) {
   return await openai
     .createCompletion("text-davinci-002", {
       prompt:
@@ -182,7 +182,7 @@ async function writeTacticExample(data) {
     });
 }
 
-async function writeTacticImprove(data) {
+async function writeTacticImprove(userID, data) {
   return await openai
     .createCompletion("text-davinci-002", {
       prompt:
