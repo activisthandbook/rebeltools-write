@@ -125,11 +125,11 @@ const db = getFirestore();
 export default {
   data() {
     return {
-      next: true,
+      next: false,
       consent: false,
       dataLoading: false,
       topic: "",
-      type: "tactic",
+      type: true,
     };
   },
   methods: {
@@ -141,7 +141,7 @@ export default {
         "generateArticle"
       );
       const id = this.makeid();
-      generateArticle({ id: id, type: this.type, topic: this.topic })
+      generateArticle({ id: id, type: "tactic", topic: this.topic })
         .then((result) => {
           onSnapshot(doc(db, "results", id), (doc) => {
             this.$store.commit("result/addResult", doc.data());

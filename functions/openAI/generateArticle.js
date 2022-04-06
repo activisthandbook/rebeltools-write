@@ -16,6 +16,7 @@ exports.generateArticle = functions
     functions.logger.info("🔥 auth data", context.auth);
 
     if (context.auth.token.emailVerified) {
+      functions.logger.info("🟢 email verified");
       const envRef = db.collection("rebeltools-write").doc("env");
       const resultRef = db.collection("results").doc(data.id);
 
@@ -81,6 +82,7 @@ exports.generateArticle = functions
         });
     } else {
       // User not signed in
+      functions.logger.error("🔴 not signed in");
       return "not signed in";
     }
   });
