@@ -200,7 +200,7 @@ export default {
         } else if (this.loadingProgress > 0.7) {
           this.loadingMessage = "Adding some relevant resources...";
         } else if (this.loadingProgress > 0.6) {
-          this.loadingMessage = "Putting words on papger...";
+          this.loadingMessage = "Putting words on paper...";
         } else if (this.loadingProgress > 0.5) {
           this.loadingMessage = "Creating outline...";
         } else if (this.loadingProgress > 0.4) {
@@ -218,7 +218,7 @@ export default {
         } else {
           clearInterval(id);
         }
-      }, 450);
+      }, 600);
     },
   },
 };

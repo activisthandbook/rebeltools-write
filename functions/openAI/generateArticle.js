@@ -1,14 +1,14 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-
 const { Configuration, OpenAIApi } = require("openai");
 
 const db = admin.firestore();
 const FieldValue = admin.firestore.FieldValue;
 
-let configuration = null;
+let openaiConfiguration = null;
 let openai = null;
 
+// Main function
 exports.generateArticle = functions
   .region("europe-west1")
   .runWith({ secrets: ["OPENAI_SECRET"] })
@@ -16,18 +16,88 @@ exports.generateArticle = functions
     functions.logger.info("🔥 generateArticle started", data);
     functions.logger.info("🔥 auth data", context.auth);
 
+    // OpenAI setup
+    openaiConfiguration = new Configuration({
+      apiKey: process.env.OPENAI_SECRET,
+    });
+
+    openai = new OpenAIApi(openaiConfiguration);
+
+    // 🔐 CHECK IF USER IS ALLOWED TO GENERATE ARTICLE
     if (context.auth.token.email_verified) {
       functions.logger.info("🟢 email verified");
-      const resultRef = db.collection("results").doc(data.id);
 
-      configuration = new Configuration({
-        apiKey: process.env.OPENAI_SECRET,
+      // Fetch customer profile
+      const customerRef = db.collection("customers").doc(context.auth.uid);
+      await customerRef.get().then(async (doc) => {
+        functions.logger.info("🟢 customer doc fetched", doc);
+        if (doc.exists) {
+          functions.logger.info("🟢 customer doc data", doc.data());
+
+          const currentCustomerTimestamps = doc.data().timestamps;
+          let newCustomerTimestamps = [];
+
+          if (currentCustomerTimestamps) {
+            const oneMonthAgo = Date.now() - 60000 * 60 * 24 * 30;
+            newCustomerTimestamps = currentCustomerTimestamps.filter(
+              (currentCustomerTimestamps) =>
+                currentCustomerTimestamps > oneMonthAgo
+            );
+          }
+          functions.logger.info(
+            "🟢 new customer timestamps",
+            newCustomerTimestamps
+          );
+
+          // Check how many articles the customer has generated this month
+          if (newCustomerTimestamps.length < 3) {
+            functions.logger.info("🟢 within limit", newCustomerTimestamps);
+            await startGeneration();
+
+            // Add timestamp
+            newCustomerTimestamps.push(Date.now());
+            customerRef
+              .set({ timestamps: newCustomerTimestamps }, { merge: true })
+              .then(() => {
+                functions.logger.info(
+                  "🟢 Set customer timestamp succesful",
+                  dataForMemberProfile
+                );
+              })
+              .catch((error) => {
+                functions.logger.error(
+                  "🔴 Error in setting customer timestamp",
+                  error
+                );
+              });
+          } else {
+            functions.logger.info("🟠 limit reached", newCustomerTimestamps);
+          }
+        } else {
+          functions.logger.info("🔴 customer doc not found");
+        }
       });
+    } else {
+      // User not signed in
+      functions.logger.error("🔴 not signed in");
+      return "not signed in";
+    }
 
-      openai = new OpenAIApi(configuration);
+    // 📝 GENERATE ARTICLE
+    async function startGeneration() {
+      let fullResponse = {};
 
-      const fullResponse = await writeTacticArticle(context.auth.uid, data);
+      // Check what type of article the user wants to generate
+      switch (data.type) {
+        case "tactic":
+          fullResponse = await writeTacticArticle(context.auth.uid, data);
+          break;
+        default:
+          break;
+      }
 
+      // Save the result to Firestore
+      const resultRef = db.collection("results").doc(data.id);
       return await resultRef
         .set(fullResponse)
         .then(() => {
@@ -38,13 +108,10 @@ exports.generateArticle = functions
           functions.logger.error("🔴 Error in setting result data", error);
           return error;
         });
-    } else {
-      // User not signed in
-      functions.logger.error("🔴 not signed in");
-      return "not signed in";
     }
   });
 
+// MOVE THIS FUNCTION TO DIFFERRENT FILE
 async function writeTacticArticle(userID, data) {
   // The write functions below will add additional data to the article object
   let article = {

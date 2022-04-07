@@ -1,4 +1,10 @@
 <template>
+  <h1>You've used up your free 3 articles this month.</h1>
+  <div>
+    <strong>Help us build more awesome tools for change-makers.</strong>
+    Developing these tools costs time and money. Support our work by subscribing
+    to Rebel Write.
+  </div>
   <div>
     <div class="row q-col-gutter-sm">
       <div class="col-xs-12 col-sm-4">
@@ -29,6 +35,7 @@
               color="black"
               outline
               no-caps
+              @click="subscribe(subscriptions.hostingCosts)"
             />
           </q-card-section>
         </q-card>
@@ -63,6 +70,7 @@
               color="black"
               outline
               no-caps
+              @click="subscribe(subscriptions.fairWage)"
             />
           </q-card-section>
         </q-card>
@@ -96,6 +104,7 @@
               class="full-width q-mt-sm gradient"
               text-color="white"
               no-caps
+              @click="subscribe(subscriptions.solidarity)"
             />
           </q-card-section>
         </q-card>
@@ -111,6 +120,59 @@
     </div>
   </div>
 </template>
+<script>
+import {
+  onSnapshot,
+  collection,
+  addDoc,
+  getFirestore,
+} from "firebase/firestore";
+const db = getFirestore();
+
+export default {
+  data: function () {
+    return {
+      subscriptions: {
+        hostingCosts: "price_1Kltt6BSVP8XWTrFwH8SZa8H",
+        fairWage: "price_1KlttWBSVP8XWTrFKjAIoz1A",
+        solidarity: "price_1KlttsBSVP8XWTrFxK1BT0pY",
+      },
+    };
+  },
+  methods: {
+    async subscribe(priceID) {
+      this.$q.loading.show();
+      const docRef = await addDoc(
+        collection(
+          db,
+          "customers",
+          this.$store.state.auth.data.uid,
+          "checkout_sessions"
+        ),
+        {
+          price: priceID,
+          success_url: window.location.origin,
+          cancel_url: window.location.origin,
+        }
+      );
+      // Wait for the CheckoutSession to get attached by the extension
+      onSnapshot(docRef, (snap) => {
+        const { error, url } = snap.data();
+        if (error) {
+          // Show an error to your customer and
+          // inspect your Cloud Function logs in the Firebase console.
+          alert(`An error occured: ${error.message}`);
+        }
+        if (url) {
+          // We have a Stripe Checkout URL, let's redirect.
+          window.location.assign(url);
+        }
+      });
+    },
+  },
+};
+</script>
+
 <style scoped lang="scss">
 h2 {
   font-size: 24px;
