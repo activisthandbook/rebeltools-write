@@ -2,6 +2,7 @@
   <promo-material />
   <article-input v-if="$store.state.auth.data.emailVerified" />
   <tactic-result v-if="$store.state.auth.data.emailVerified" />
+  <about-explanation />
   <!-- <subscribe-options v-if="$store.state.auth.data.emailVerified" /> -->
 </template>
 
@@ -12,6 +13,7 @@ const auth = getAuth();
 
 import ArticleInput from "components/ArticleInput";
 import TacticResult from "components/TacticResult";
+import AboutExplanation from "components/AboutExplanation";
 // import SubscribeOptions from "components/SubscribeOptions";
 import PromoMaterial from "components/PromoMaterial";
 
@@ -21,6 +23,7 @@ export default {
     ArticleInput,
     TacticResult,
     // SubscribeOptions,
+    AboutExplanation,
     PromoMaterial,
   },
   methods: {

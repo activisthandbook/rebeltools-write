@@ -5,7 +5,7 @@
         <h2>About this tool</h2>
         <div>
           Rebel Write is a tool to <strong>help you write guides</strong> for
-          activists. It is powered by
+          change-makers. It is powered by
           <strong>artifical intelligence (AI)</strong>. In other words: a
           computer writes the text it produces.
         </div>
@@ -19,8 +19,7 @@
           You need to do your own research.
         </div>
         <div>
-          This tool is not meant to replace human writers. Do not copy & paste
-          the text it produces.
+          This tool is not meant to replace human writers.
           <strong>Use it to brainstorm and get inspiration</strong> about the
           topic you want to write about.
         </div>
