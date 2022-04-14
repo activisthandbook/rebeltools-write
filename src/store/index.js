@@ -4,6 +4,7 @@ import { createStore } from "vuex";
 import firebase from "./firebase";
 import auth from "./auth";
 import result from "./result";
+import currentCustomer from "./currentCustomer";
 
 // import example from './module-example'
 
@@ -22,6 +23,7 @@ export default store(function (/* { ssrContext } */) {
       firebase,
       auth,
       result,
+      currentCustomer,
     },
 
     // enable strict mode (adds overhead!)

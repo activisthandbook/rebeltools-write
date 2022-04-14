@@ -10,17 +10,20 @@
       start with an empty page. Having read over 350 billion words, this tool
       generates article outlines in seconds.
     </div>
-    <div v-show="!$store.state.auth.data.emailVerified">
-      <q-btn
-        @click="signin"
-        label="Sign in with Google"
-        icon="mdi-account-circle"
-        no-caps
-        text-color="white"
-        class="gradient shadow-9 q-mb-lg"
-        padding="8px 24px"
-        flat
-      />
+    <div v-show="!$store.state.auth.data.emailVerified" class="q-gutter-y-lg">
+      <div class="q-mt-xl">
+        <q-btn
+          @click="signin"
+          label="Start now"
+          no-caps
+          text-color="white"
+          class="gradient shadow-12"
+          padding="10px 42px"
+          flat
+        />
+      </div>
+
+      <img src="../assets/notes-plant.svg" />
       <h2>Research & education</h2>
       <div>
         Humanity is facing major challanges. Rebel Write helps people explore
@@ -29,6 +32,7 @@
         gives social researchers access to knowledge based on millions of
         webpages and books, being unprecedented in its size.
       </div>
+      <img src="../assets/ai.svg" style="max-width: 350px" />
       <h2>Safe & responsible AI</h2>
       <div>
         We believe artificial intelligence can help the public good, if used
@@ -65,10 +69,20 @@
             review. Users can give feedback on the produced output.
           </li>
           <li>
-            To avoid abuse, we limit the number of articles produced per month
-            and protect our backend resources using Firebase App Check.
+            To avoid abuse, we limit the number of articles produced per month.
           </li>
         </ul>
+      </div>
+      <q-card flat bordered>
+        <q-card-section>
+          Help us make Rebel Write better. Send us a message:
+          <a href="hey@rebel.tools">hey@rebel.tools</a></q-card-section
+        >
+      </q-card>
+      <div class="text-caption text-grey">
+        Rebel Write was developed by the same people behind Activist Handbook,
+        the Wikipedia for activists. All text on this website is available under
+        a Creative Commons BY-NC-SA 4.0 Licence. Images via Storyset
       </div>
     </div>
   </div>

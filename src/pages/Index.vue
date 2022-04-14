@@ -1,9 +1,14 @@
 <template>
   <promo-material />
-  <article-input v-if="$store.state.auth.data.emailVerified" />
-  <tactic-result v-if="$store.state.auth.data.emailVerified" />
-  <subscribe-options v-if="$store.state.auth.data.emailVerified" />
-  <about-explanation />
+  <div v-if="$store.state.currentCustomer.dataLoaded">
+    <div v-if="$store.state.auth.data.emailVerified">
+      <article-input />
+      <tactic-result />
+    </div>
+
+    <about-explanation />
+  </div>
+  <div v-else-if="$store.state.auth.dataLoaded"><q-spinner /></div>
 </template>
 
 <script>
@@ -14,7 +19,6 @@ const auth = getAuth();
 import ArticleInput from "components/ArticleInput";
 import TacticResult from "components/TacticResult";
 import AboutExplanation from "components/AboutExplanation";
-import SubscribeOptions from "components/SubscribeOptions";
 import PromoMaterial from "components/PromoMaterial";
 
 export default {
@@ -22,9 +26,15 @@ export default {
   components: {
     ArticleInput,
     TacticResult,
-    SubscribeOptions,
     AboutExplanation,
     PromoMaterial,
+  },
+  computed: {
+    // a computed getter
+    creditCount: function () {
+      // `this` points to the vm instance
+      return this.$store.state.currentCustomer.data.timestamps.length;
+    },
   },
   methods: {
     signin() {

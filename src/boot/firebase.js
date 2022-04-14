@@ -74,6 +74,7 @@ export default boot(async ({ store }) => {
       https://firebase.google.com/docs/reference/js/firebase.User */
       // Store the user data in Vuex
       store.commit("auth/signin", user);
+      store.dispatch("currentCustomer/subscribeToDatabase");
       /* Future logged events will be linked to the user ID:
       https://firebase.google.com/docs/analytics/userid */
       // setUserId(store.state.firebase.analytics, user.uid);

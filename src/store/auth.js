@@ -26,8 +26,8 @@ export default {
       state.dataLoaded = true;
       // console.log(newUser)
     },
-    signedInWithEmailLink(state) {
-      state.signedInWithEmailLink = true;
+    loaded(state) {
+      state.dataLoaded = true;
     },
     destroy(state) {
       state.dataLoaded = false;

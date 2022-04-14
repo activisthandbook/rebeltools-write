@@ -1,5 +1,5 @@
 <template>
-  <q-card v-show="!next" id="card">
+  <q-card v-show="!next" id="card" class="q-my-md">
     <q-card-section>
       <div class="q-gutter-y-sm">
         <h2 ref="scrollPosition">Important to know</h2>
@@ -53,7 +53,7 @@
       </div>
     </q-card-section>
   </q-card>
-  <q-card v-show="next">
+  <q-card v-show="next" class="q-my-md">
     <q-card-section>
       <div>
         <h2>Article generator</h2>
@@ -122,8 +122,14 @@
     </q-card-section>
   </q-card>
   <div id="scrollPosition"></div>
+  <q-dialog v-model="error" :maximized="$q.screen.lt.md" persistent>
+    <subscribe-options />
+  </q-dialog>
+  <subscribe-options />
 </template>
 <script>
+import SubscribeOptions from "components/SubscribeOptions";
+
 import { httpsCallable } from "firebase/functions";
 import { doc, onSnapshot, getFirestore } from "firebase/firestore";
 const db = getFirestore();
@@ -132,11 +138,13 @@ import { scroll } from "quasar";
 const { getScrollTarget, setVerticalScrollPosition } = scroll;
 
 export default {
+  components: { SubscribeOptions },
   data() {
     return {
       next: false,
       consent: false,
       dataLoading: false,
+      error: false,
       loadingProgress: 0.01,
       loadingMessage: "Boosting AI power...",
       topic: "",
@@ -150,12 +158,13 @@ export default {
       );
       const offset = document.getElementById("scrollPosition").offsetTop - 56;
       const duration = 1000;
-      console.log(target);
       setVerticalScrollPosition(target, offset, duration);
     },
     generateText() {
       this.dataLoading = true;
       this.loadingProgress = 0.01;
+      this.error = null;
+
       this.progressLoading();
 
       const generateArticle = httpsCallable(
@@ -165,6 +174,7 @@ export default {
       const id = this.makeid();
       generateArticle({ id: id, type: "tactic", topic: this.topic })
         .then((result) => {
+          console.log(result);
           onSnapshot(doc(db, "results", id), (doc) => {
             this.$store.commit("result/addResult", doc.data());
             this.dataLoading = false;
@@ -173,7 +183,21 @@ export default {
           });
         })
         .catch((error) => {
-          console.log(error);
+          this.dataLoading = false;
+          this.loadingProgress = 0.01;
+
+          if (
+            error ==
+            "FirebaseError: You have reached the limit of articles per month"
+          ) {
+            this.error = true;
+          } else {
+            this.$q.notify({
+              message: "Generating article failed",
+              icon: "mdi-alert",
+            });
+            console.log(error);
+          }
         });
     },
     makeid() {
@@ -189,10 +213,7 @@ export default {
       return result;
     },
     progressLoading() {
-      console.log(this.loadingProgress);
-
       const id = setInterval(() => {
-        console.log(this.loadingProgress);
         if (this.loadingProgress > 0.9) {
           this.loadingMessage = "Almost done...";
         } else if (this.loadingProgress > 0.8) {
@@ -218,7 +239,7 @@ export default {
         } else {
           clearInterval(id);
         }
-      }, 600);
+      }, 750);
     },
   },
 };

@@ -23,19 +23,20 @@ exports.generateArticle = functions
 
     openai = new OpenAIApi(openaiConfiguration);
 
+    const customerRef = db.collection("customers").doc(context.auth.uid);
+    let newCustomerTimestamps = [];
+
     // 🔐 CHECK IF USER IS ALLOWED TO GENERATE ARTICLE
     if (context.auth.token.email_verified) {
       functions.logger.info("🟢 email verified");
 
       // Fetch customer profile
-      const customerRef = db.collection("customers").doc(context.auth.uid);
       await customerRef.get().then(async (doc) => {
         functions.logger.info("🟢 customer doc fetched", doc);
         if (doc.exists) {
           functions.logger.info("🟢 customer doc data", doc.data());
 
           const currentCustomerTimestamps = doc.data().timestamps;
-          let newCustomerTimestamps = [];
 
           if (currentCustomerTimestamps) {
             const oneMonthAgo = Date.now() - 60000 * 60 * 24 * 30;
@@ -52,35 +53,35 @@ exports.generateArticle = functions
           // Check how many articles the customer has generated this month
           if (newCustomerTimestamps.length < 3) {
             functions.logger.info("🟢 within limit", newCustomerTimestamps);
-            await startGeneration();
+            const response = await startGeneration();
 
             // Add timestamp
             newCustomerTimestamps.push(Date.now());
-            customerRef
-              .set({ timestamps: newCustomerTimestamps }, { merge: true })
-              .then(() => {
-                functions.logger.info(
-                  "🟢 Set customer timestamp succesful",
-                  dataForMemberProfile
-                );
-              })
-              .catch((error) => {
-                functions.logger.error(
-                  "🔴 Error in setting customer timestamp",
-                  error
-                );
-              });
+            updateCustomerProfile();
+            return response;
           } else {
             functions.logger.info("🟠 limit reached", newCustomerTimestamps);
+            updateCustomerProfile();
+            throw new functions.https.HttpsError(
+              "resource-exhausted",
+              "You have reached the limit of articles per month"
+            );
           }
         } else {
-          functions.logger.info("🔴 customer doc not found");
+          functions.logger.error("🔴 customer doc not found");
+          throw new functions.https(
+            "NOT_FOUND",
+            "We could not retrieve your profile info."
+          );
         }
       });
     } else {
       // User not signed in
       functions.logger.error("🔴 not signed in");
-      return "not signed in";
+      throw new functions.https.HttpsError(
+        "unauthenticated",
+        "You must be signed in to generate an article."
+      );
     }
 
     // 📝 GENERATE ARTICLE
@@ -106,7 +107,32 @@ exports.generateArticle = functions
         })
         .catch((error) => {
           functions.logger.error("🔴 Error in setting result data", error);
-          return error;
+          throw new functions.https.HttpsError(
+            "internal",
+            "Something went wrong saving your generated article."
+          );
+        });
+    }
+
+    // UPDATE CUSOTMER PROFILE
+    async function updateCustomerProfile() {
+      customerRef
+        .set({ timestamps: newCustomerTimestamps }, { merge: true })
+        .then(() => {
+          functions.logger.info(
+            "🟢 Set customer timestamp succesful",
+            newCustomerTimestamps
+          );
+        })
+        .catch((error) => {
+          functions.logger.error(
+            "🔴 Error in setting customer timestamp",
+            error
+          );
+          throw new functions.https.HttpsError(
+            "internal",
+            "Something went wrong updating your profile."
+          );
         });
     }
   });
@@ -134,7 +160,10 @@ async function writeTacticArticle(userID, data) {
     })
     .catch((error) => {
       functions.logger.error("🔴 Promise rejected", error);
-      return error;
+      throw new functions.https.HttpsError(
+        "internal",
+        "Something went wrong generating your article."
+      );
     });
 
   function extractTextFromResponse(response) {
@@ -159,7 +188,7 @@ async function writeTacticArticle(userID, data) {
       })
       .catch((error) => {
         functions.logger.error("🔴 Error in OpenAI", error);
-        return error;
+        throw error;
       });
   }
 
@@ -180,7 +209,7 @@ async function writeTacticArticle(userID, data) {
       })
       .catch((error) => {
         functions.logger.error("🔴 Error in OpenAI", error);
-        return error;
+        throw error;
       });
   }
 
@@ -201,7 +230,7 @@ async function writeTacticArticle(userID, data) {
       })
       .catch((error) => {
         functions.logger.error("🔴 Error in OpenAI", error);
-        return error;
+        throw error;
       });
   }
 
@@ -219,7 +248,7 @@ async function writeTacticArticle(userID, data) {
       })
       .catch((error) => {
         functions.logger.error("🔴 Error in OpenAI", error);
-        return error;
+        throw error;
       });
   }
 
@@ -238,7 +267,7 @@ async function writeTacticArticle(userID, data) {
       })
       .catch((error) => {
         functions.logger.error("🔴 Error in OpenAI", error);
-        return error;
+        throw error;
       });
   }
 
@@ -257,7 +286,7 @@ async function writeTacticArticle(userID, data) {
       })
       .catch((error) => {
         functions.logger.error("🔴 Error in OpenAI", error);
-        return error;
+        throw error;
       });
   }
 }

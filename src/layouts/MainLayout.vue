@@ -10,8 +10,14 @@
           flat
           no-caps
         /> -->
-        <span class="text-body2">{{ $store.state.auth.data.displayName }}</span>
-        <q-avatar class="q-ml-sm" size="36px">
+        <span class="text-body2" v-if="$store.state.auth.data.displayName">{{
+          $store.state.auth.data.displayName
+        }}</span>
+        <q-avatar
+          class="q-ml-sm"
+          size="36px"
+          v-if="$store.state.auth.data.photoURL"
+        >
           <img :src="$store.state.auth.data.photoURL" />
         </q-avatar>
       </q-toolbar>

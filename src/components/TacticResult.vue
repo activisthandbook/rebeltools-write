@@ -1,5 +1,5 @@
 <template>
-  <q-card v-if="$store.state.result.data" id="results">
+  <q-card v-if="$store.state.result.data" id="results" class="q-mb-md">
     <q-card-section>
       <div class="row justify-between items-center">
         <div class="text-h1">{{ $store.state.result.data.topic }}</div>
@@ -215,7 +215,6 @@ export default {
               element.innerText ||
                 /** @type {HTMLTextAreaElement} */ (element).value
             );
-          console.log(element.innerHTML.replace(/(?:\r\n|\r|\n)/g, "<br />"));
           event.clipboardData &&
             event.clipboardData.setData(
               "text/html",
